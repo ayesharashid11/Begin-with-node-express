@@ -25,7 +25,7 @@ const path = require('path');
 //     email: 'nimra@gmail.com',
 // }
 // ];
-const port = 9100;
+const port = 8000;
 const filePath = path.join(__dirname , 'users_data.json')
 const readUsersFromFile = () => {
     const data = fs.readFileSync(filePath, 'utf8'); 
@@ -44,7 +44,14 @@ app.get('/', (req, res, next)=>{
 (req, res) => {
     res.json({ users });
 });
-app.post('/', (req, res) => {
+app.post('/', (req, res, next) =>{
+    const {id, name, email} = req.body;
+    if(!id || !name || !email ){
+        return res.json('please enter Id, Name and Email')
+    }
+    next();
+},
+(req, res) => {
     const newUser = req.body;
     users.push(newUser);
     writeUsersToFile(users);
@@ -62,14 +69,21 @@ next();
     writeUsersToFile(users); 
     res.json({ message: 'User deleted successfully!', user });
 });
-app.patch('/:id', (req, res) => {
+app.patch('/:id',(req, res, next)=>{
+    const id = req.params.id;
+    const user = users.find((item) => item.id === id);
+    if(!user){
+        return res.status(404).json({ message: 'User not found!' });
+    }
+next();
+},
+ (req, res) => {
     const id = req.params.id;
     const user = users.find((item) => item.id === id);  
-    if (!user) {
-        return res.json({ message: 'User not found' });
-    }
+    // if (!user) {
+    //     return res.json({ message: 'User not found' });
+    // }
     const { name, email } = req.body;
-    console.log(req.body);
     if (name) user.name = name; 
     if (email) user.email = email;
    writeUsersToFile(users); 
