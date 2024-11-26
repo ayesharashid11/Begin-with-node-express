@@ -25,7 +25,7 @@ const path = require('path');
 //     email: 'nimra@gmail.com',
 // }
 // ];
-const port = 8000;
+const port = 9100;
 const filePath = path.join(__dirname , 'users_data.json')
 const readUsersFromFile = () => {
     const data = fs.readFileSync(filePath, 'utf8'); 
@@ -35,7 +35,13 @@ let users = readUsersFromFile();
 const writeUsersToFile = (data) => {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
 };
-app.get('/', (req, res) => {
+app.get('/', (req, res, next)=>{
+    if (!users || users.length === 0) {
+        return res.status(404).json({ message: 'No users found!' });
+    }
+    next();
+} ,
+(req, res) => {
     res.json({ users });
 });
 app.post('/', (req, res) => {
@@ -44,7 +50,12 @@ app.post('/', (req, res) => {
     writeUsersToFile(users);
     res.json({ users });
 });
-app.delete('/:id', (req, res) => {
+app.delete('/:id', (req, res, next)=> {
+    if(!users || users.length === 0)
+    { return res.status(404).json('No ID found ')}
+next();
+},
+(req, res) => {
     const id = req.params.id;
     const user = users.filter((item) => item.id !== id);
     users = user;
