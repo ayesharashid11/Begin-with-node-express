@@ -90,5 +90,31 @@ next();
     res.json({ user });
 })
 
-
+app.post('/login', (req, res, next)=>{
+    const {email, password} = req.body;
+    if(!email || !password){
+        return res.json('Please provide email and password')
+    }
+    next();
+},
+(req, res)=>{
+     const {email, password} = req.body;
+    const user = users.find((item) => item.email === email);
+      if(user.password !== password){
+        return res.json('Invalid details')
+      }
+      res.json('User logged in!')
+})
+app.post('/signup', (req, res, next) =>{
+    const {id, name, email, password} = req.body;
+    if(!name || !email || !password|| !id){
+        return res.json('Please provide ID, name, email and password')
+    }
+    next();
+}, (req, res) =>{
+    const newUser = req.body;
+    users.push(newUser);
+    writeUsersToFile(users);
+    res.json({ msg: "User Signup" , newUser });
+})
 app.listen(port, () => console.log(`Server is running on port ${port}`));

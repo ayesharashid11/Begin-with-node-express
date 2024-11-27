@@ -2,21 +2,30 @@
   {
     "id": "1",
     "name": " 'Ayesha'",
-    "email": "ayesha@gmail.com"
+    "email": "ayesha@gmail.com",
+    "password": "1234"
   },
   {
     "id": "3",
     "name": "rashid mahmood",
-    "email": "rashid@gmail.com"
+    "email": "rashid@gmail.com",
+    "password": "1234"
   },
   {
     "id": "4",
     "name": "Khalid",
-    "email": "nimra@gmail.com"
+    "email": "khalid@gmail.com",
+    "password": "1234"
   },
   {
     "id": "2000",
     "name": "rashid mahmood",
-    "email": "rashid@gmail.com"
+    "email": "rashid@gmail.com",
+    "password": "1234"
+  },
+  {
+    "name": "Ania",
+    "email": "ania@gmail.com",
+    "password": "1234"
   }
 ]
